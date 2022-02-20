@@ -7,5 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: make test
-        run: make test
+      - name: Unit tests
+        run: make test_unit
+      - name: E2E tests
+        run: make test_e2e
