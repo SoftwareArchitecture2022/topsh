@@ -9,6 +9,7 @@ jobs:
         sanitizer: ['NONE', 'ADDRESS', 'UB']
     runs-on: ubuntu-latest
     steps:
+        if: ${{ false }}  # disable for now
       - uses: actions/checkout@v2
         env:
           SANITIZER: ${{ matrix.sanitizer }}
