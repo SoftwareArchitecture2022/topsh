@@ -4,10 +4,15 @@ on: [push]
 
 jobs:
   test:
-    if: ${{ false }}  # disable for now
+      #if: ${{ false }}  # disable for now
+    strategy:
+      matrix:
+        sanitizer: ['NONE', 'ADDRESS', 'UB']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - env:
+          SANITIZER: ${{ matrix.sanitizer }}
       - name: Unit tests
         run: make test_unit
       - name: E2E tests
