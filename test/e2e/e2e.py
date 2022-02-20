@@ -6,8 +6,8 @@ import os
 class SmokeTest(unittest.TestCase):
     def check(self, test_input, correct_answer):
         proc = subprocess.Popen(["./build/topsh"],
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE)
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE)
         out = proc.communicate(test_input.encode())[0].decode("UTF-8")
 
         self.assertEqual(out, correct_answer)
