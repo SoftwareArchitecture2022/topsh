@@ -4,6 +4,8 @@ project(topsh)
 
 set(CMAKE_CXX_STANDARD 20)
 
+include_directories("src/")
+
 add_executable(
   topsh
   src/main.cpp
