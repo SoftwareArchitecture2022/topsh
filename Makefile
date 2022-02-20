@@ -8,4 +8,6 @@ test_unit: build
 test_e2e: build
 	python3 -m unittest test/e2e/e2e.py
 
-.PHONY: build test_unit test_e2e
+test: test_unit test_e2e
+
+.PHONY: build test_unit test_e2e test
