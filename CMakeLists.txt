@@ -4,7 +4,14 @@ project(topsh)
 
 set(CMAKE_CXX_STANDARD 20)
 
-# Download GTest
+add_executable(
+  topsh
+  src/main.cpp
+)
+
+################################
+# GTest
+################################
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -18,6 +25,7 @@ add_executable(
   hello_test
   test/hello_test.cpp
 )
+
 target_link_libraries(
   hello_test
   gtest_main
@@ -25,3 +33,4 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(hello_test)
+################################
