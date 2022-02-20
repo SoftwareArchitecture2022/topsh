@@ -1,5 +1,6 @@
 import unittest
 import subprocess
+import os
 
 
 class SmokeTest(unittest.TestCase):
@@ -10,5 +11,15 @@ class SmokeTest(unittest.TestCase):
         self.assertEqual(out, correct_answer)
         self.assertEqual(proc.returncode, 0)
 
-    def test_basic(self):
-        self.check("Hi", "Hi")
+    def test_exit(self):
+        self.check("exit", "")
+
+    def test_echo(self):
+        self.check("echo Hello", "Hello")
+
+    def test_pwd(self):
+        self.check("pwd", os.getcwd())
+
+    def test_echo_after_exit(self):
+        self.check("exit\necho Hello", "")
+
