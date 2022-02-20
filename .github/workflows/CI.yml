@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   test:
-      #if: ${{ false }}  # disable for now
     strategy:
       matrix:
         sanitizer: ['NONE', 'ADDRESS', 'UB']
