@@ -2,37 +2,57 @@
 
 #include <gtest/gtest.h>
 
-TEST(BasicAssertions, ParserGroup) {
+TEST(TestExternalCommand, BasicAssertions) {
     auto answer = interpreter::internal::Command{.name = "aoeu", .args = ""};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("aoeu"));
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("aoeu"));
+}
 
-    answer = interpreter::internal::Command{.name = "cat", .args = ""};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("cat"));
+TEST(TestEmptyCat, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "cat", .args = ""};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("cat"));
+}
 
-    answer = interpreter::internal::Command{.name = "exit", .args = ""};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("exit"));
+TEST(TestExit, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "exit", .args = ""};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("exit"));
+}
 
-    answer = interpreter::internal::Command{.name = "cat", .args = "file"};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("cat file"));
+TEST(TestCat, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "cat", .args = "file"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("cat file"));
+}
 
-    answer = interpreter::internal::Command{.name = "cat", .args = "exit"};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("cat exit"));
+TEST(TestCatExit, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "cat", .args = "exit"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("cat exit"));
+}
 
-    answer = interpreter::internal::Command{.name = "exit", .args = "cat"};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("exit cat"));
+TEST(TestExitCat, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "exit", .args = "cat"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("exit cat"));
+}
 
-    answer = interpreter::internal::Command{.name = "cat", .args = "cat cat cat exit"};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("cat cat cat cat exit"));
+TEST(TestLongCat, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "cat", .args = "cat cat cat exit"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("cat cat cat cat exit"));
+}
 
-    answer = interpreter::internal::Command{.name = "echo", .args = "lol"};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("echo lol"));
+TEST(TestEcho, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "echo", .args = "lol"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("echo lol"));
+}
 
-    answer = interpreter::internal::Command{.name = "wc", .args = "lol kek"};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("wc lol kek"));
+TEST(TestWC, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "wc", .args = "lol kek"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("wc lol kek"));
+}
 
-    answer = interpreter::internal::Command{.name = "pwd", .args = ""};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse("pwd"));
+TEST(TestPWD, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "pwd", .args = ""};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("pwd"));
+}
 
-    answer = interpreter::internal::Command{.name = "", .args = ""};
-    EXPECT_EQ(answer, interpreter::parser::Parser().Parse(""));
+TEST(TestEmpty, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "", .args = ""};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse(""));
 }
