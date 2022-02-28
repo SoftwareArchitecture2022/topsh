@@ -13,19 +13,19 @@ namespace interpreter::parser {
 
 class ParseException : public std::runtime_error {
 public:
-    ParseException() : runtime_error("error during input parsing: unpaired quotes") {};
+    ParseException() : runtime_error("error during input parsing: unpaired quotes") {}
 };
 
 class Parser {
 public:
-    [[nodiscard]] internal::Command Parse(std::string_view input) const noexcept {
+    [[nodiscard]] internal::Command Parse(std::string_view input) const {
         std::vector<internal::RawString> raw_str = SplitByDelimiters(input);
         std::vector<std::string> str_sub = SubstituteVariables(raw_str);
         internal::Command cmd = ParseCommand(str_sub);
         return cmd;
     }
 private:
-    [[nodiscard]] std::vector<internal::RawString> SplitByDelimiters(std::string_view input) const noexcept {
+    [[nodiscard]] std::vector<internal::RawString> SplitByDelimiters(std::string_view input) const {
         std::vector<internal::RawString> raw_str;
         std::string s;
         for (size_t i; i < input.length(); i++) {
@@ -33,8 +33,8 @@ private:
                 raw_str.push_back({s, false});
                 s.clear();
             } else if (input[i] == '"' || input[i] == '\'') {
-                int begin = i + 1;
-                int end = input.find(input[i], begin);
+                size_t begin = i + 1;
+                size_t end = input.find(input[i], begin);
                 if (end == std::string::npos) {
                     throw ParseException();
                 }
@@ -64,7 +64,7 @@ private:
         size_t eq_idx = str_vec[0].find('=');
         if (eq_idx == std::string::npos) {
             std::string args;
-            for (int i = 1; i < str_vec.size(); i++) {
+            for (size_t i = 1; i < str_vec.size(); i++) {
                 args.append(str_vec[i]);
                 args.push_back(' ');
             }

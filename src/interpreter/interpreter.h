@@ -21,7 +21,7 @@ class Interpreter {
                 if (res.isExited()) {
                     break;
                 }
-            } catch (parser::ParseException exc) {
+            } catch (parser::ParseException &exc) {
                 std::cerr << exc.what() << std::endl;
             }
         }
