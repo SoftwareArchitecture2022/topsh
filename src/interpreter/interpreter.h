@@ -8,6 +8,8 @@
 namespace interpreter {
 
 class Interpreter {
+public:
+    // launches a loop that reads user input, parses it and executes commands
     void Run() noexcept {
         while (true) {
             std::string input;
