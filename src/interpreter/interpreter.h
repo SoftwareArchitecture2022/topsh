@@ -11,9 +11,9 @@ class Interpreter {
 public:
     // launches a loop that reads user input, parses it and executes commands
     void Run() noexcept {
-        while (true) {
+        while (!std::cin.eof()) {
             std::string input;
-            std::cin >> input;
+            std::getline(std::cin, input);
             try {
                 internal::Command cmd = parser->Parse(input);
                 internal::ExecuteResult res = executor->Execute({cmd});
