@@ -41,15 +41,15 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_executable(
-  hello_test
-  test/hello_test.cpp
+  parser_test
+  test/unit/parser/test_parser.cpp
 )
 
 target_link_libraries(
-  hello_test
+  parser_test
   gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(parser_test)
 ################################
