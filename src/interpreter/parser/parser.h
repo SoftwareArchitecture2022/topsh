@@ -18,6 +18,7 @@ public:
 
 class Parser {
 public:
+    // converts a string from user into a Command structure, containing command name and its arguments
     [[nodiscard]] internal::Command Parse(std::string_view input) const {
         std::vector<internal::RawString> raw_str = SplitByDelimiters(input);
         std::vector<std::string> str_sub = SubstituteVariables(raw_str);
@@ -28,7 +29,7 @@ private:
     [[nodiscard]] std::vector<internal::RawString> SplitByDelimiters(std::string_view input) const {
         std::vector<internal::RawString> raw_str;
         std::string s;
-        for (size_t i; i < input.length(); i++) {
+        for (size_t i = 0; i < input.length(); i++) {
             if (isblank(input[i]) && s.length() != 0) {
                 raw_str.push_back({s, false});
                 s.clear();
@@ -61,19 +62,24 @@ private:
     }
 
     [[nodiscard]] internal::Command ParseCommand(const std::vector<std::string>& str_vec) const noexcept {
+        if (str_vec.size() == 0) {
+            return {"", ""};
+        }
         size_t eq_idx = str_vec[0].find('=');
         if (eq_idx == std::string::npos) {
             std::string args;
             for (size_t i = 1; i < str_vec.size(); i++) {
                 args.append(str_vec[i]);
-                args.push_back(' ');
+                if (i != str_vec.size() - 1) {
+                    args.push_back(' ');
+                }
             }
             return {str_vec[0], args};
         }
         std::string args;
         args.append(str_vec[0].data(), eq_idx);
-        args.push_back(' ');
         if (eq_idx + 1 < str_vec[0].length()) {
+            args.push_back(' ');
             args.append(str_vec[0].data(), eq_idx + 1, str_vec[0].length() - eq_idx - 1);
         }
         return {"=", args};
