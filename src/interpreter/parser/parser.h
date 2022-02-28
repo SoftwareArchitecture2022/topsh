@@ -30,9 +30,11 @@ private:
         std::vector<internal::RawString> raw_str;
         std::string s;
         for (size_t i = 0; i < input.length(); i++) {
-            if (isblank(input[i]) && s.length() != 0) {
-                raw_str.push_back({s, false});
-                s.clear();
+            if (isblank(input[i])) {
+                if (s.length() != 0) {
+                    raw_str.push_back({s, false});
+                    s.clear();
+                }
             } else if (input[i] == '"' || input[i] == '\'') {
                 size_t begin = i + 1;
                 size_t end = input.find(input[i], begin);
