@@ -2,6 +2,7 @@
 
 #include "interpreter/storage/storage.h"
 #include "interpreter/internal/command.h"
+#include "interpreter/internal/execute_result.h"
 #include "interpreter/internal/raw_string.h"
 
 #include <memory>

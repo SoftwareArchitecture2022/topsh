@@ -10,8 +10,8 @@ namespace interpreter::executor {
 
 class Executor {
 public:
-    int Execute(const std::vector<internal::Command>) const noexcept {
-        return 0;
+    [[nodiscard]] internal::ExecuteResult Execute(const std::vector<internal::Command>) const noexcept {
+        return {0, 0};
     }
 private:
     std::shared_ptr<CommandExecutor> MapNameToCommandExecutor(std::string_view) const noexcept {
