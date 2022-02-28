@@ -24,3 +24,40 @@ class SmokeTest(unittest.TestCase):
 
     def test_echo_after_exit(self):
         self.check("exit\necho Hello", "")
+
+    def test_cat(self):
+        with open("__test_file", "w") as f:
+            f.write("1\n2\n3")
+        self.check("cat __test_file", "1\n2\n3\n")
+        os.remove("__test_file")
+
+    def test_cat_twice(self):
+        with open("__test_file", "w") as f:
+            f.write("1\n2\n3")
+        self.check("cat __test_file __test_file", "1\n2\n3\n1\n2\n3\n")
+        os.remove("__test_file")
+
+    def test_wc(self):
+        with open("__test_file", "w") as f:
+            f.write("1\n2\n3")
+        self.check("wc __test_file", "3 3 6 __test_file\n")
+        os.remove("__test_file")
+
+    def test_wc_twice(self):
+        with open("__test_file", "w") as f:
+            f.write("1\n2\n3")
+        self.check("wc __test_file __test_file", "3 3 6 __test_file\n3 3 6 __test_file\n6 6 12 total\n")
+        os.remove("__test_file")
+
+    def test_cat_with_endline(self):
+        with open("__test_file", "w") as f:
+            f.write("1\n2\n3\n")
+        self.check("cat __test_file", "1\n2\n3\n\n")
+        os.remove("__test_file")
+
+    def test_cat_with_endline_twice(self):
+        with open("__test_file", "w") as f:
+            f.write("1\n2\n3\n")
+        self.check("cat __test_file __test_file", "1\n2\n3\n\n1\n2\n3\n\n")
+        os.remove("__test_file")
+
