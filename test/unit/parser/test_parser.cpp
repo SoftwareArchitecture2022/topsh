@@ -32,4 +32,7 @@ TEST(BasicAssertions, ParserGroup) {
 
     answer = interpreter::internal::Command{.name = "pwd", .args = ""};
     EXPECT_EQ(answer, interpreter::parser::Parser().Parse("pwd"));
+
+    answer = interpreter::internal::Command{.name = "", .args = ""};
+    EXPECT_EQ(answer, interpreter::parser::Parser().Parse(""));
 }
