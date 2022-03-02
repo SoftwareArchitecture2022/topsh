@@ -1,5 +1,0 @@
-if(EXISTS "/home/m1eszok/SHAD/ARCH/gitrepos/topsh/cmake-build-debug/parser_test[1]_tests.cmake")
-  include("/home/m1eszok/SHAD/ARCH/gitrepos/topsh/cmake-build-debug/parser_test[1]_tests.cmake")
-else()
-  add_test(parser_test_NOT_BUILT parser_test_NOT_BUILT)
-endif()
