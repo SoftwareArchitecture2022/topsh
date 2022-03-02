@@ -56,3 +56,8 @@ TEST(TestEmpty, BasicAssertions) {
     auto answer = interpreter::internal::Command{.name = "", .args = ""};
     ASSERT_EQ(answer, interpreter::parser::Parser().Parse(""));
 }
+
+TEST(TestSpaces, BasicAssertions) {
+    auto answer = interpreter::internal::Command{.name = "echo", .args = "echo echo echo"};
+    ASSERT_EQ(answer, interpreter::parser::Parser().Parse("echo  echo   echo           echo"));
+}
