@@ -1,3 +1,5 @@
 build/
 test/__pycache__
 test/e2e/__pycache__
+__test_file
+cmake-build-debug
