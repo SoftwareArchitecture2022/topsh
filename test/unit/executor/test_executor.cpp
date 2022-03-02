@@ -2,16 +2,40 @@
 
 #include <gtest/gtest.h>
 
-TEST(TestEcho, TestExecutor) {
-  auto executor = interpreter::executor::Executor();
-  testing::internal::CaptureStdout();
-  testing::internal::CaptureStderr();
-  std::string hi = "Hi";
-  auto execution_result = executor.Execute({{"echo", hi}});
+class ExecutorFixture:
+  public ::testing::Test
+{
+public:
+  void SetUp() override {
+    testing::internal::CaptureStdout();
+    testing::internal::CaptureStderr();
+  }
 
-  ASSERT_FALSE(execution_result.isExited());
-  ASSERT_EQ(0, execution_result.getProgramStatusCode());
-  ASSERT_EQ(hi, testing::internal::GetCapturedStdout());
-  ASSERT_EQ("", testing::internal::GetCapturedStderr());
+  void check(std::string command, std::string args, std::string expectedOutResult, std::string expectedErrResult, int expectedStatusCode, bool expectedIsExited) const {
+    auto execution_result = executor.Execute({{command, args}});
+
+    ASSERT_EQ(expectedIsExited, execution_result.isExited());
+    ASSERT_EQ(expectedStatusCode, execution_result.getProgramStatusCode());
+    ASSERT_EQ(expectedOutResult, testing::internal::GetCapturedStdout());
+    ASSERT_EQ(expectedErrResult, testing::internal::GetCapturedStderr());
+  }
+protected:
+  interpreter::executor::Executor executor{};
+};
+
+TEST_F(ExecutorFixture, TestEcho) {
+  check("echo", "Hi", "Hi", "", 0, false);
+}
+
+TEST_F(ExecutorFixture, TestEchoLong) {
+  check("echo", "Hi Hi Hi", "Hi Hi Hi", "", 0, false);
+}
+
+TEST_F(ExecutorFixture, TestExit) {
+  check("exit", "", "", "", 0, true);
+}
+
+TEST_F(ExecutorFixture, TestExitWithArgs) {
+  check("exit", "Hi", "Hi", "", 0, true);
 }
 
