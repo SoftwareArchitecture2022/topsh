@@ -5,3 +5,4 @@ __test_file
 cmake-build-debug/
 .vscode/
 venv/
+.idea/
