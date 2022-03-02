@@ -1,19 +1,21 @@
 #pragma once
 
 #include <string>
+#include <cstdlib>
+#include <stdlib.h>
 
 namespace interpreter::storage {
 
 class Storage {
-public:
-    std::string MapVariableToValue(std::string var) {
-        return "";
-    }
+ public:
+  std::string MapVariableToValue(const std::string& var) const {
+    return std::getenv(var.data());
+  }
 
-    void SetVariableValue(std::string var, std::string val) {
-        return;
-    }
-private:
+  void SetVariableValue(const std::string& var, const std::string& val) const {
+    setenv(var.data(), val.data(), 1);
+  }
+ private:
 };
 
 } // namespace

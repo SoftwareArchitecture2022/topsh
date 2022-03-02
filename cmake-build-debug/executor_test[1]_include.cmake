@@ -1,0 +1,5 @@
+if(EXISTS "/home/m1eszok/SHAD/ARCH/gitrepos/topsh/cmake-build-debug/executor_test[1]_tests.cmake")
+  include("/home/m1eszok/SHAD/ARCH/gitrepos/topsh/cmake-build-debug/executor_test[1]_tests.cmake")
+else()
+  add_test(executor_test_NOT_BUILT executor_test_NOT_BUILT)
+endif()

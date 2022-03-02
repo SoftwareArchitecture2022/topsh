@@ -4,17 +4,19 @@
 
 #include <memory>
 
-
 namespace interpreter::executor {
 
-class EchoExecutor:
-    public CommandExecutor
-{
-public:
-    [[nodiscard]] int Execute(std::istream& input, std::ostream& output, std::ostream& error) noexcept override {
-        return 0;
-    }
-private:
+class EchoExecutor :
+    public CommandExecutor {
+ public:
+  [[nodiscard]] int Execute(std::istream&,
+                            std::ostream& output,
+                            std::ostream&,
+                            const std::string& args) noexcept override {
+    output << args << "\n";
+    return 0;
+  }
+ private:
 };
 
 } // namespace

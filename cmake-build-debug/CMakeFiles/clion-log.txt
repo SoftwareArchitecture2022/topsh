@@ -1,0 +1,11 @@
+/home/m1eszok/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/m1eszok/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/ninja/linux/ninja -G Ninja /home/m1eszok/SHAD/ARCH/gitrepos/topsh
+CMake Error at /home/m1eszok/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/213.6777.58/bin/cmake/linux/share/cmake-3.21/Modules/GoogleTest.cmake:434 (get_property):
+  get_property could not find TARGET executor_test.  Perhaps it has not yet
+  been created.
+Call Stack (most recent call first):
+  CMakeLists.txt:56 (gtest_discover_tests)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/m1eszok/SHAD/ARCH/gitrepos/topsh/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "/home/m1eszok/SHAD/ARCH/gitrepos/topsh/cmake-build-debug/CMakeFiles/CMakeError.log".

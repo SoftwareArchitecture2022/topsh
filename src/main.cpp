@@ -1,5 +1,5 @@
 #include "interpreter/interpreter.h"
 
 int main() {
-    interpreter::Interpreter().Run();
+  interpreter::Interpreter().Run();
 }
