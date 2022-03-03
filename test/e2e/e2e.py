@@ -24,7 +24,7 @@ class SmokeTest(unittest.TestCase):
         self.check("echo Hello   ", "Hello\n")
 
     def test_echo_long(self):
-        self.check("echo Hello Hello                      Hello", 
+        self.check("echo Hello Hello                      Hello",
                    "Hello Hello Hello\n")
 
     def test_pwd(self):
@@ -57,14 +57,14 @@ class SmokeTest(unittest.TestCase):
     def test_wc_spaced(self):
         with open("__test_file", "w") as f:
             f.write("1\n2\n3")
-        self.check("wc                                    __test_file", 
+        self.check("wc                                    __test_file",
                    "3 3 6 __test_file\n")
         os.remove("__test_file")
 
     def test_wc_spaced_on_end(self):
         with open("__test_file", "w") as f:
             f.write("1\n2\n3")
-        self.check("wc                __test_file   ", 
+        self.check("wc                __test_file   ",
                    "3 3 6 __test_file\n")
         os.remove("__test_file")
 
