@@ -31,7 +31,8 @@ class Parser {
     std::vector<internal::RawString> raw_str;
     std::string s;
     for (size_t i = 0; i < input.length(); i++) {
-      if (isblank(input[i]) && s.length() != 0) {
+      bool is_blank = std::isblank(input[i]);
+      if (is_blank && s.length() != 0) {
         raw_str.push_back({s, false});
         s.clear();
       } else if (input[i] == '"' || input[i] == '\'') {
@@ -44,7 +45,7 @@ class Parser {
         raw_str.push_back({s, input[i] == '\''});
         s.clear();
         i = end;
-      } else {
+      } else if (!is_blank) {
         s.push_back(input[i]);
       }
     }

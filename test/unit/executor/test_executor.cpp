@@ -24,11 +24,11 @@ protected:
 };
 
 TEST_F(ExecutorFixture, TestEcho) {
-  check("echo", "Hi", "Hi", "", 0, false);
+  check("echo", "Hi", "Hi\n", "", 0, false);
 }
 
 TEST_F(ExecutorFixture, TestEchoLong) {
-  check("echo", "Hi Hi Hi", "Hi Hi Hi", "", 0, false);
+  check("echo", "Hi Hi Hi", "Hi Hi Hi\n", "", 0, false);
 }
 
 TEST_F(ExecutorFixture, TestExit) {
@@ -36,6 +36,6 @@ TEST_F(ExecutorFixture, TestExit) {
 }
 
 TEST_F(ExecutorFixture, TestExitWithArgs) {
-  check("exit", "Hi", "Hi", "", 0, true);
+  check("exit", "Hi", "", "", 0, true);
 }
 

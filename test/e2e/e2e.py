@@ -18,17 +18,17 @@ class SmokeTest(unittest.TestCase):
         self.check("exit", "")
 
     def test_echo(self):
-        self.check("echo Hello", "Hello")
+        self.check("echo Hello", "Hello\n")
 
     def test_echo_with_space(self):
-        self.check("echo Hello   ", "Hello")
+        self.check("echo Hello   ", "Hello\n")
 
     def test_echo_long(self):
         self.check("echo Hello Hello                      Hello", 
-                   "Hello Hello Hello")
+                   "Hello Hello Hello\n")
 
     def test_pwd(self):
-        self.check("pwd", os.getcwd())
+        self.check("pwd", os.getcwd() + "\n")
 
     def test_echo_after_exit(self):
         self.check("exit\necho Hello", "")

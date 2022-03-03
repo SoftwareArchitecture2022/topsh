@@ -25,7 +25,7 @@ public:
         error << filename << ": ex: no such file or directory\n";
         continue;
       }
-      output << file.rdbuf();
+      output << file.rdbuf() << "\n";
     }
     return 0;
   }

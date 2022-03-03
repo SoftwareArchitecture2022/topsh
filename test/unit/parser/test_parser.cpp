@@ -59,5 +59,6 @@ TEST(TestEmpty, BasicAssertions) {
 
 TEST(TestSpaces, BasicAssertions) {
     auto answer = interpreter::internal::Command{.name = "echo", .args = "echo echo echo"};
+    std::cout << interpreter::parser::Parser().Parse("echo  echo   echo           echo").args << std::endl;
     ASSERT_EQ(answer, interpreter::parser::Parser().Parse("echo  echo   echo           echo"));
 }

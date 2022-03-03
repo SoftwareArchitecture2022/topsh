@@ -16,7 +16,7 @@ public:
                                     std::ostream& output,
                                     std::ostream&,
                                     const std::string&) noexcept override {
-    output << std::filesystem::current_path() << "\n";
+    output << std::string(std::filesystem::current_path()) << "\n";
     return 0;
   }
 private:
