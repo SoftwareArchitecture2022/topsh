@@ -10,8 +10,11 @@ namespace interpreter::executor {
 class AssignExecutor :
     public CommandExecutor {
  public:
-  AssignExecutor()
-      : CommandExecutor(), storage(std::make_shared<storage::Storage>()) {}
+  AssignExecutor() : CommandExecutor(){}
+
+  void SetStorage(const std::shared_ptr<storage::Storage> &s) {
+      storage = s;
+  }
 
   [[nodiscard]] int Execute(std::istream&,
                                     std::ostream&,

@@ -12,7 +12,7 @@ public:
   }
 
   void check(std::string command, std::string args, std::string expectedOutResult, std::string expectedErrResult, int expectedStatusCode, bool expectedIsExited) const {
-    auto execution_result = executor.Execute({{command, args}});
+    auto execution_result = executor.Execute({{command, {args}}});
 
     ASSERT_EQ(expectedIsExited, execution_result.isExited());
     ASSERT_EQ(expectedStatusCode, execution_result.getProgramStatusCode());

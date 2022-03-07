@@ -15,12 +15,15 @@ class Interpreter {
   }
   // launches a loop that reads user input, parses it and executes commands
   void Run() noexcept {
+    std::shared_ptr<storage::Storage> storage = std::make_shared<storage::Storage>();
+    parser->SetStorage(storage);
+    executor->SetStorage(storage);
     while (!std::cin.eof()) {
       std::string input;
       std::getline(std::cin, input);
       try {
-        internal::Command cmd = parser->Parse(input);
-        internal::ExecuteResult res = executor->Execute({cmd});
+        std::vector<internal::Command> cmd = parser->Parse(input);
+        internal::ExecuteResult res = executor->Execute(cmd);
         if (res.getProgramStatusCode() != 0) {
           std::cout << "program exited with code " << res.getProgramStatusCode()
                     << std::endl;
