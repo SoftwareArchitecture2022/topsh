@@ -1,0 +1,32 @@
+name: TopSH
+
+on: [push]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        sanitizer: ['NONE', 'ADDRESS', 'UB']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        env:
+          SANITIZER: ${{ matrix.sanitizer }}
+      - name: Unit tests
+        run: make test_unit
+      - name: E2E tests
+        run: make test_e2e
+  lint-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PyTorch
+        uses: actions/checkout@master
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run flake8
+        uses: suo/flake8-github-action@releases/v1
+        with:
+          checkName: 'lint-tests'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
