@@ -13,7 +13,8 @@ namespace interpreter::parser {
 
 class ParseException : public std::runtime_error {
  public:
-  ParseException() : runtime_error("error during input parsing: unpaired quotes") {}
+  ParseException()
+      : runtime_error("error during input parsing: unpaired quotes") {}
 };
 
 class Parser {
@@ -31,7 +32,7 @@ class Parser {
     storage = s;
   }
  private:
-  [[nodiscard]] std::vector<internal::RawString> SplitByDelimiters(const std::string_view& input) {
+  [[nodiscard]] static std::vector<internal::RawString> SplitByDelimiters(const std::string_view& input) {
     std::vector<internal::RawString> str_vect;
     std::string s;
     for (size_t i = 0; i < input.length(); i++) {
@@ -62,72 +63,76 @@ class Parser {
     return str_vect;
   }
 
-  [[nodiscard]] std::vector<std::string> SubstituteVariables(const std::vector<internal::RawString>& raw_str) noexcept {
+  [[nodiscard]] std::vector<std::string> SubstituteVariables(const std::vector<
+      internal::RawString>& raw_str) noexcept {
     std::vector<std::string> str_subs;
-      for (internal::RawString rs : raw_str) {
-        std::string s = rs.value;
-        size_t subs_idx = s.find('$');
-        while (!rs.quoted && subs_idx != std::string::npos) {
-          std::string name;
-          for (size_t i = subs_idx + 1; i < s.length(); i++) {
-            char c = s[i];
-            if (!std::isblank(c) && c != '=' && c != '$') {
-              name += c;
-              } else {
-                break;
-              }
+    for (const internal::RawString& rs : raw_str) {
+      std::string s = rs.value;
+      size_t subs_idx = s.find('$');
+      while (!rs.quoted && subs_idx != std::string::npos) {
+        std::string name;
+        for (size_t i = subs_idx + 1; i < s.length(); i++) {
+          char c = s[i];
+          if (!std::isblank(c) && c != '=' && c != '$') {
+            name += c;
+          } else {
+            break;
           }
-          std::string value = storage->MapVariableToValue(name);
-          s = s.replace(subs_idx, name.length() + 1, value);
-          subs_idx = s.find('$');
         }
-        str_subs.push_back(s);
+        std::string value = storage->MapVariableToValue(name);
+        s = s.replace(subs_idx, name.length() + 1, value);
+        subs_idx = s.find('$');
       }
+      str_subs.push_back(s);
+    }
     return str_subs;
   }
 
-  [[nodiscard]] std::vector<std::vector<std::string>> SplitByPipes(const std::vector<std::string>& str_vect) noexcept {
+  [[nodiscard]] static std::vector<std::vector<std::string>>
+  SplitByPipes(const std::vector<std::string>& str_vect) noexcept {
     std::vector<std::vector<std::string>> str_pipes;
     std::vector<std::string> cur;
-    for (std::string s : str_vect) {
-        if (s == "|") {
-            str_pipes.push_back(cur);
-            cur.clear();
-        } else {
-            cur.push_back(s);
-        }
+    for (const std::string& s : str_vect) {
+      if (s == "|") {
+        str_pipes.push_back(cur);
+        cur.clear();
+      } else {
+        cur.push_back(s);
+      }
     }
     str_pipes.push_back(cur);
     return str_pipes;
   }
 
-  [[nodiscard]] std::vector<internal::Command> ParseCommands(const std::vector<std::vector<std::string>>& str_pipes) noexcept {
+  [[nodiscard]] static std::vector<internal::Command> ParseCommands(const std::vector<
+      std::vector<std::string>>& str_pipes) noexcept {
     std::vector<internal::Command> cmd_vect;
-    for (std::vector<std::string> v : str_pipes) {
-        cmd_vect.push_back(ParseCommand(v));
+    cmd_vect.reserve(str_pipes.size());
+    for (const std::vector<std::string>& v : str_pipes) {
+      cmd_vect.push_back(ParseCommand(v));
     }
     return cmd_vect;
   }
 
-  [[nodiscard]] internal::Command ParseCommand(const std::vector<std::string>& str_vec) noexcept {
+  [[nodiscard]] static internal::Command ParseCommand(const std::vector<std::string>& str_vec) noexcept {
     if (str_vec.empty()) {
-      return internal::Command();
+      return {};
     }
     size_t eq_idx = str_vec[0].find('=');
     if (eq_idx == std::string::npos) {
       std::vector<std::string> args;
       for (size_t i = 1; i < str_vec.size(); i++) {
-          args.push_back(str_vec[i]);
+        args.push_back(str_vec[i]);
       }
       return {str_vec[0], args};
     }
     std::vector<std::string> args;
     args.push_back(str_vec[0].substr(0, eq_idx));
     if (eq_idx + 1 < str_vec[0].length()) {
-        args.push_back(str_vec[0].substr(eq_idx + 1));
+      args.push_back(str_vec[0].substr(eq_idx + 1));
     }
     for (size_t i = 1; i < str_vec.size(); i++) {
-        args.push_back(str_vec[i]);
+      args.push_back(str_vec[i]);
     }
     return {"=", args};
   }

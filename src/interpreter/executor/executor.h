@@ -22,8 +22,6 @@ class Executor {
  public:
   [[nodiscard]] internal::ExecuteResult
   Execute(const std::vector<internal::Command>& commands) const {
-    // stage one implementation without pipes
-    assert(commands.size() <= 1);
 
     int exit_code = 0;
     if (commands.size() == 1) {
@@ -37,10 +35,10 @@ class Executor {
       auto exec = MapNameToCommandExecutor(name);
       std::string command_args;
       for (size_t i = 0; i < args.size(); i++) {
-          command_args += args[i];
-          if (i != args.size() - 1) {
-              command_args += ' ';
-          }
+        command_args += args[i];
+        if (i != args.size() - 1) {
+          command_args += ' ';
+        }
       }
       if (!exec.has_value()) {
         exec = external_executor_;
@@ -53,7 +51,8 @@ class Executor {
   }
 
   void SetStorage(const std::shared_ptr<storage::Storage>& s) {
-    static_cast<AssignExecutor*>(command_to_executor_.at("=").get())->SetStorage(s);
+    dynamic_cast<AssignExecutor*>(command_to_executor_.at("=").get())->SetStorage(
+        s);
   }
 
  private:
