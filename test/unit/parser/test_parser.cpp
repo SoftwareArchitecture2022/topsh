@@ -98,7 +98,6 @@ TEST(TestEq1, BasicAssertions) {
 TEST(TestEq2, BasicAssertions) {
     std::vector<interpreter::internal::Command> answer = {interpreter::internal::Command{.name = "=",
                                                                                          .args = {"arg1", "arg2 arg3"}}};
-    std::vector<interpreter::internal::Command> res = interpreter::parser::Parser().Parse("arg1='arg2 arg3'");
     ASSERT_EQ(answer, interpreter::parser::Parser().Parse("arg1='arg2 arg3'"));
 }
 
