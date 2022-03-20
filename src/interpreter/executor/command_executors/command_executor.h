@@ -12,7 +12,7 @@ class CommandExecutor {
  public:
   virtual ~CommandExecutor() = default;
 
-  [[nodiscard]] virtual int Execute(std::istream*,
+  [[nodiscard]] virtual int Execute(std::istream* input,
                                     std::ostream* output,
                                     std::ostream* error,
                                     const internal::Command& command) noexcept {
@@ -20,6 +20,10 @@ class CommandExecutor {
     std::uniform_int_distribution<int> distribution(100, 999);
 
     std::filesystem::create_directories("/tmp/topsh");
+    std::string tmp_in =
+        "/tmp/topsh/tmp_in_" + std::to_string(distribution(generator))
+            + ".txt";
+    Read(*input, tmp_in);
     std::string tmp_out =
         "/tmp/topsh/tmp_out_" + std::to_string(distribution(generator))
             + ".txt";
@@ -31,7 +35,7 @@ class CommandExecutor {
     for (const auto& arg : command.args) {
       ss << arg << " ";
     }
-    ss << "1>" << tmp_out << " 2>" << tmp_err;
+    ss << "1>" << tmp_out << " 2>" << tmp_err << " <" << tmp_in;
     std::string cmd = ss.str();
     *output << std::flush;
     *error << std::flush;
@@ -47,6 +51,13 @@ class CommandExecutor {
     std::stringstream ss;
     ss << in.rdbuf();
     output << ss.str();
+  }
+
+  static void Read(std::istream& input, const std::string& filename) {
+    std::stringstream ss;
+    ss << input.rdbuf();
+    std::ofstream out(filename);
+    out << ss.str();
   }
 };
 

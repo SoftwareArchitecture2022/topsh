@@ -3,7 +3,7 @@ name: TopSH
 on: [push]
 
 jobs:
-  test:
+  test_unit:
     strategy:
       matrix:
         sanitizer: ['NONE', 'ADDRESS', 'UB']
@@ -14,6 +14,10 @@ jobs:
           SANITIZER: ${{ matrix.sanitizer }}
       - name: Unit tests
         run: make test_unit
+  test_e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: E2E tests
         run: make test_e2e
   lint-tests:
@@ -29,4 +33,3 @@ jobs:
           checkName: 'lint-tests'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
