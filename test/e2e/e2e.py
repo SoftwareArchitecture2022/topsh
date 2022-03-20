@@ -81,7 +81,6 @@ class SmokeTest(unittest.TestCase):
         self.check("wc __test_file", "4 3 7 __test_file\n")
         os.remove("__test_file")
 
-
     def test_wc_rn(self):
         with open("__test_file", "w") as f:
             f.write("1\r\n2\r\n3\r\n")
