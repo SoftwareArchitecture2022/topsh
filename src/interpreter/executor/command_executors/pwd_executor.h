@@ -7,19 +7,18 @@
 
 namespace interpreter::executor {
 
-class PWDExecutor:
-    public CommandExecutor
-{
-public:
+class PWDExecutor :
+    public CommandExecutor {
+ public:
 
-  [[nodiscard]] int Execute(std::istream&,
-                                    std::ostream& output,
-                                    std::ostream&,
-                                    const std::string&) noexcept override {
-    output << std::string(std::filesystem::current_path()) << "\n";
+  [[nodiscard]] int Execute(std::istream*,
+                            std::ostream* output,
+                            std::ostream*,
+                            const internal::Command&) noexcept override {
+    *output << std::string(std::filesystem::current_path()) << "\n";
     return 0;
   }
-private:
+ private:
 };
 
 } // namespace

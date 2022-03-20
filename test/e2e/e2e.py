@@ -50,8 +50,15 @@ class SmokeTest(unittest.TestCase):
 
     def test_wc(self):
         with open("__test_file", "w") as f:
-            f.write("1\n2\n3")
-        self.check("wc __test_file", "3 3 6 __test_file\n")
+            f.write("1\n2\n3\n")
+        self.check("wc __test_file", "4 3 7 __test_file\n")
+        os.remove("__test_file")
+
+
+    def test_wc_rn(self):
+        with open("__test_file", "w") as f:
+            f.write("1\r\n2\r\n3\r\n")
+        self.check("wc __test_file", "4 3 10 __test_file\n")
         os.remove("__test_file")
 
     def test_wc_spaced(self):
@@ -89,4 +96,4 @@ class SmokeTest(unittest.TestCase):
 
     def test_external(self):
         if sys.platform == "linux":
-            self.check("touch aoeu\ncat aoeu", "")
+            self.check("touch /tmp/topsh/aoeu\ncat /tmp/topsh/aoeu", "")

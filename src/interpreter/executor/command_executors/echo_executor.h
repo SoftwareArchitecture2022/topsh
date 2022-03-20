@@ -9,11 +9,17 @@ namespace interpreter::executor {
 class EchoExecutor :
     public CommandExecutor {
  public:
-  [[nodiscard]] int Execute(std::istream&,
-                            std::ostream& output,
-                            std::ostream&,
-                            const std::string& args) noexcept override {
-    output << args << "\n";
+  [[nodiscard]] int Execute(std::istream*,
+                            std::ostream* output,
+                            std::ostream*,
+                            const internal::Command& command) noexcept override {
+    for (size_t i = 0; i < command.args.size(); ++i) {
+      if (i > 0) {
+        *output << " ";
+      }
+      *output << command.args[i];
+    }
+    *output << "\n";
     return 0;
   }
  private:

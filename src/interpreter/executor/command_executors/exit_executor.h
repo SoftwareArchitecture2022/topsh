@@ -7,10 +7,10 @@ namespace interpreter::executor {
 class ExitExecutor :
     public CommandExecutor {
  public:
-  [[nodiscard]] int Execute(std::istream&,
-                            std::ostream&,
-                            std::ostream&,
-                            const std::string&) noexcept override {
+  [[nodiscard]] int Execute(std::istream*,
+                            std::ostream*,
+                            std::ostream*,
+                            const internal::Command&) noexcept override {
     return 0;
   }
  private:

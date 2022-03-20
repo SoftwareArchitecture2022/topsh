@@ -10,24 +10,23 @@ namespace interpreter::executor {
 class AssignExecutor :
     public CommandExecutor {
  public:
-  AssignExecutor() : CommandExecutor(){}
+  AssignExecutor() : CommandExecutor() {}
 
-  void SetStorage(const std::shared_ptr<storage::Storage> &s) {
-      storage = s;
+  void SetStorage(const std::shared_ptr<storage::Storage>& s) {
+    storage = s;
   }
 
-  [[nodiscard]] int Execute(std::istream&,
-                                    std::ostream&,
-                                    std::ostream& error,
-                                    const std::string& args) noexcept override {
-    size_t space_pos = args.find(' ');
-    if (space_pos == std::string::npos) {
-      error << "assign parse error\n";
+  [[nodiscard]] int Execute(std::istream*,
+                            std::ostream*,
+                            std::ostream* error,
+                            const internal::Command& command) noexcept override {
+    const auto& args = command.args;
+    if (auto args_size = args.size(); args_size != 2) {
+      *error << command.name << " error: wrong amount of args " << args_size
+            << " != 2\n";
       return 1;
     }
-    std::string var = args.substr(0, space_pos);
-    std::string val = args.substr(space_pos + 1);
-    storage->SetVariableValue(var, val);
+    storage->SetVariableValue(args[0], args[1]);
     return 0;
   }
  private:

@@ -10,26 +10,28 @@ namespace interpreter::executor {
 
 namespace ii = interpreter::internal;
 
-class CatExecutor:
-    public CommandExecutor
-{
-public:
-  [[nodiscard]] int Execute(std::istream& input,
-                                    std::ostream& output,
-                                    std::ostream& error,
-                                    const std::string& args) noexcept override {
-    std::vector<ii::File> files = ii::ParseFiles(input, args);
+class CatExecutor :
+    public CommandExecutor {
+ public:
+  [[nodiscard]] int Execute(std::istream* input,
+                            std::ostream* output,
+                            std::ostream* error,
+                            const internal::Command& command) noexcept override {
+    const auto& args = command.args;
+    if (args.empty()) {
+      *output << input->rdbuf();
+      return 0;
+    }
 
-    for (auto& [filename, file] : files) {
+    for (auto& filename : args) {
       if (!std::filesystem::exists(filename)) {
-        error << filename << ": ex: no such file or directory\n";
+        *error << filename << ": ex: no such file or directory\n";
         continue;
       }
-      output << file.rdbuf() << "\n";
+      *output << std::ifstream(filename).rdbuf() << "\n";
     }
     return 0;
   }
-private:
 };
 
 } // namespace

@@ -31,22 +31,25 @@ class Executor {
         return {true, exit_code};
       }
     }
-    for (const auto&[name, args] : commands) {
-      auto exec = MapNameToCommandExecutor(name);
+    std::stringstream in_buf;
+    std::stringstream out_buf;
+    std::istream* in = &std::cin;
+    std::ostream* out = &out_buf;
+
+    for (const auto& command : commands) {
+      auto exec = MapNameToCommandExecutor(command.name);
       std::string command_args;
-      for (size_t i = 0; i < args.size(); i++) {
-        command_args += args[i];
-        if (i != args.size() - 1) {
-          command_args += ' ';
-        }
-      }
       if (!exec.has_value()) {
         exec = external_executor_;
-        command_args = name + " " + command_args;
       }
-      exit_code =
-          exec.value()->Execute(std::cin, std::cout, std::cerr, command_args);
+      exit_code = exec.value()->Execute(in, out, &std::cerr, command);
+      std::stringstream().swap(in_buf);
+      in_buf << out_buf.str();
+      std::stringstream().swap(out_buf);
+      in = &in_buf;
+      out = &out_buf;
     }
+    std::cout << in_buf.str();
     return {false, exit_code};
   }
 

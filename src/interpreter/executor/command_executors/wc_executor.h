@@ -13,56 +13,71 @@ namespace ii = interpreter::internal;
 class WCExecutor :
     public CommandExecutor {
  public:
-  [[nodiscard]] int Execute(std::istream& input,
-                            std::ostream& output,
-                            std::ostream& error,
-                            const std::string& args) noexcept override {
-    std::vector<ii::File> files = ii::ParseFiles(input, args);
+  [[nodiscard]] int Execute(std::istream* input,
+                            std::ostream* output,
+                            std::ostream* error,
+                            const internal::Command& command) noexcept override {
+    const auto& args = command.args;
+    if (args.empty()) {
+      WCInfo count_input = WordCount(*input);
+      FormatWC(*output, count_input);
+      return 0;
+    }
 
-    size_t lines_t = 0;
-    size_t words_t = 0;
-    size_t bytes_t = 0;
+    WCInfo count_total;
 
-    for (auto&[filename, file] : files) {
+    for (const auto& filename : command.args) {
       if (!std::filesystem::exists(filename)) {
-        error << filename << ": ex: no such file or directory\n";
+        *error << filename << ": ex: no such file or directory\n";
         continue;
       }
-      size_t lines = 0;
-      size_t words = 0;
+      std::ifstream file(filename);
 
-      std::string data;
-      for (; std::getline(file, data); ++lines) {
-        words += ii::CountWords(data);
-      }
-      std::fstream fbin(filename);
-      fbin.seekp(0);
-      auto begin = fbin.tellg();
-      fbin.seekg(0, std::ios::end);
-      auto end = fbin.tellg();
-      auto bytes = static_cast<size_t>(end - begin) + 1;
+      WCInfo count_file = WordCount(file);
 
-      FormatWC(output, lines, words, bytes, filename);
-
-      lines_t += lines;
-      words_t += words;
-      bytes_t += bytes;
+      FormatWC(*output, count_file, filename);
+      count_total += count_file;
     }
-    if (files.size() > 1) {
-      FormatWC(output, lines_t, words_t, bytes_t, "total");
+    if (args.size() > 1) {
+      FormatWC(*output, count_total, "total");
     }
     return 0;
   }
  private:
+  struct WCInfo {
+    size_t lines = 0;
+    size_t words = 0;
+    size_t bytes = 0;
+
+    WCInfo& operator+=(const WCInfo& other) {
+      lines += other.lines;
+      words += other.words;
+      bytes += other.bytes;
+      return *this;
+    }
+  };
+
   void static FormatWC(std::ostream& output,
-                       size_t lines,
-                       size_t words,
-                       size_t bytes,
-                       const std::string& filename) {
-    output << lines << " " << words << " " << bytes << " " << filename
-           << "\n";
+                       const WCInfo& count_info,
+                       const std::optional<std::string>& filename = std::nullopt) {
+    output << count_info.lines << " " << count_info.words << " "
+           << count_info.bytes;
+    if (filename.has_value()) {
+      output << " " << filename.value();
+    }
+    output << "\n";
   }
 
+  static WCInfo WordCount(std::istream& file) {
+    WCInfo count_file;
+    std::string data;
+    for (; !file.eof(); ++count_file.lines) {
+      std::getline(file, data, '\n');
+      count_file.words += ii::CountWords(data);
+      count_file.bytes += data.size() + 1;
+    }
+    return count_file;
+  }
 };
 
 } // namespace

@@ -16,22 +16,6 @@ struct File {
   std::fstream file;
 };
 
-std::vector<File> ParseFiles(std::istream& input,
-                             const std::string& args) {
-  std::stringstream filenames;
-  if (args.empty()) {
-    filenames << input.rdbuf();
-  } else {
-    filenames << args;
-  }
-
-  std::vector<File> result;
-  std::string filename;
-  while (filenames >> filename) {
-    result.emplace_back(filename, std::fstream(filename));
-  }
-  return result;
-}
 
 [[nodiscard]] size_t CountWords(const std::string& data) {
   const std::regex expression("[^\\s]+");
